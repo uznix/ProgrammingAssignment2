@@ -1,15 +1,32 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Matrix inversion functions.
 
-## Write a short comment describing this function
-
+## Initiates functions to invert and cashe matrix.
 makeCacheMatrix <- function(x = matrix()) {
-
+  solved_mtrx <- NULL
+  set <- function(y) {
+    x <<- y
+    solved_mtrx <<- NULL
+  }
+  get <- function() x
+  set_solv_mtrx <- function(solve) solved_mtrx <<- solve
+  get_solv_mtrx <- function() solved_mtrx
+  list(set = set, get = get,
+       set_solv_mtrx = set_solv_mtrx,
+       get_solv_mtrx = get_solv_mtrx)
 }
 
 
-## Write a short comment describing this function
-
+## The function returns inverse matrix.
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  solved_mtrx <- x$get_solv_mtrx()
+  ## Check if the inverse matrix already cashed
+  if(!is.null(solved_mtrx)) {
+    message("getting cached data")
+    return(solved_mtrx) ## If yes get inverse matrix from cashe
+  }
+  ## If not solves the input matrix
+  data <- x$get()
+  solved_mtrx <- solve(data, ...)
+  x$set_solv_mtrx(solved_mtrx)
+  solved_mtrx ## Return a matrix that is the inverse of 'x'
 }
